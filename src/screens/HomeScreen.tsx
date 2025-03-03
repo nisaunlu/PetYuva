@@ -1,21 +1,22 @@
-import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default class ProfileScreen extends Component {
-  render() {
-    return (
-      <View>
-        <Text style = {styles.container}> HOmeScreen </Text>
-      </View>
-    )
-  }
+export default function HomeScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>HomeScreen</Text>
+    </View>
+  );
 }
-const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
-   
-  },
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, Text, Dimensions, Alert, Pressable } from 'react-native';
+import { View, StyleSheet, Image, Text, Dimensions, Alert, Pressable, TouchableOpacity } from 'react-native';
 import { kediarkaplan, logo } from "../../assent/images";
 import ReusableTextInput from "../component/TextInput";
 import ReusableButton from "../component/Button";
@@ -129,9 +129,14 @@ const RegisterScreen = ({ navigation }) => {
         textColor="#D29596"
 
       />
-      <Pressable onPress={() => navigation.navigate("Login")}>
-        <Text style={{ fontWeight: 'bold', marginTop: 30 }}>Already have an account? Login</Text>
-      </Pressable>
+        <TouchableOpacity
+                       style={styles.registerContainer}
+                       onPress={() => navigation.navigate("Login")}
+       
+                   >
+                       <Text style={styles.registerText}>Hesabın varsa? Giriş Yap</Text>
+                   </TouchableOpacity>
+     
     </View>
   );
 };
@@ -208,7 +213,18 @@ const styles = StyleSheet.create({
     width: "60%",
     alignSelf: "center",
     top: scaleSize(255),
-  }
+  },
+  registerContainer: {
+    position: "absolute",
+    bottom: scaleSize(60),
+    marginLeft:scaleSize(95),
+},
+registerText: {
+    textAlign: "center",
+    color: "black",
+    fontSize: scaleSize(16),
+    top: -scaleSize(52),
+},
 });
 
 export default RegisterScreen;
