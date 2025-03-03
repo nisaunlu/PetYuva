@@ -4,24 +4,29 @@ import { kediarkaplan, logo } from "../../assent/images";
 import ReusableTextInput from "../component/TextInput";
 import ReusableButton from "../component/Button";
 
-// Ekran boyutlarını al
 const { width, height } = Dimensions.get("window");
 
-const RegisterScreen = () => {
-  const [name, setName] = useState(""); 
-  const [surname,setSurname] = useState("");
-  const [number,setNumber] = useState("");
-  const [adres,setAdres]=useState("");
-  const[password,setPassword]=useState("")
-  // useState fonksiyon içinde olmalı!
 
+const scaleSize = (size) => {
+  const scale = width / 375; 
+  return size * scale;
+};
+
+const RegisterScreen = ({navigation}) => {
+  const [name, setName] = useState(""); 
+  const [surname, setSurname] = useState("");
+  const [number, setNumber] = useState("");
+  const [adres, setAdres] = useState("");
+  const [password, setPassword] = useState("");
+ 
   return (
     <View style={styles.container}>
       <Image style={styles.backgroundImage} source={kediarkaplan} />
-
-      <View style={styles.RightcContainer}>
-        <Image style={styles.RightImages} source={logo} />
-        <Text style={styles.Text}>Pet Yuva</Text>
+                 
+      <View style={styles.headerContainer}>
+        <Image style={styles.logo} source={logo} />
+        <Text style={styles.title}>Pet</Text>
+        <Text style={styles.subtitle}>Yuva</Text>
       </View>
 
       <ReusableTextInput
@@ -30,39 +35,35 @@ const RegisterScreen = () => {
         onChangeText={(value) => setName(value)}
         style={styles.TextInput}
       />
-       <ReusableTextInput
+      <ReusableTextInput
         placeholder='Soyadınız:'
         value={surname}
         onChangeText={(value) => setSurname(value)}
         style={styles.TextInput}
       />
-        <ReusableTextInput
+      <ReusableTextInput
         placeholder='Telefon Numaranız:'
         value={number}
         onChangeText={(value) => setNumber(value)}
         style={styles.TextInput}
       />
-       <ReusableTextInput
+      <ReusableTextInput
         placeholder='E-posta Adresiniz:'
         value={adres}
         onChangeText={(value) => setAdres(value)}
         style={styles.TextInput}
       />
-        <ReusableTextInput
-        placeholder='şifreniz:'
+      <ReusableTextInput
+        placeholder='Şifreniz:'
         value={password}
         onChangeText={(value) => setPassword(value)}
         style={styles.TextInput}
+        secureTextEntry={true}
       />
-         <ReusableButton 
+      <ReusableButton 
+        style={styles.Button}
         title="Kaydol"
-        onPress={() => Alert.alert("Kayıt Başarılı!")}
-        backgroundColor='white' 
-        textColor="#D29596"
-      />
-         <ReusableButton 
-        title="Giriş Yap"
-        onPress={() => Alert.alert("Giriş Yapıldı!")}
+        onPress={() => navigation.navigate("HomeScreen")}
         backgroundColor='white' 
         textColor="#D29596"
       />
@@ -73,14 +74,42 @@ const RegisterScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+  },
+  headerContainer: {
+    position: "absolute",
+    top: scaleSize(50),
+    width: '100%',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    paddingHorizontal: scaleSize(20),
+  },
+  logo: {
+    width: scaleSize(120),
+    height: scaleSize(120),
+    resizeMode: "contain",
+  },
+  title: {
+    fontSize: scaleSize(30),
+    color: "black",
+    fontWeight: "bold",
+    top: scaleSize(35),
+    right:scaleSize(42),
+    marginLeft: scaleSize(10),
+  },
+  subtitle: {
+    fontSize: scaleSize(30),
+    color: "black",
+    top: scaleSize(70),
+    fontWeight: "bold",
+    marginLeft: -scaleSize(55),
   },
   backgroundImage: {
     position: 'absolute',
     width: width, 
     height: height, 
     top: 0,
-    bottom:0,
+    bottom: 0,
     left: 0,
     zIndex: -1,
   },
@@ -103,13 +132,17 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   TextInput: {
-    top: 290,
+    marginTop: scaleSize(5),
     width: "95%",
-    bottom:30,
-    color:'#D295C8',
+    top: scaleSize(255),
+    color: '#D295C8',
     alignSelf: "center",
-   
   },
+  Button: {
+    marginTop: scaleSize(20),
+    width: "60%",
+    alignSelf: "center",
+  }
 });
 
 export default RegisterScreen;
