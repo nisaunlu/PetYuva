@@ -25,7 +25,7 @@ export const login = createAsyncThunk(
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             
             // User ve token bilgilerini serileştirilebilir formatta döndür
-            const token = userCredential.user.stsTokenManager.accessToken;
+            const token = await userCredential.user.getIdToken();
             await AsyncStorage.setItem("userToken", token);
             
             return {

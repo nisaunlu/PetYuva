@@ -1,28 +1,89 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Image, Text, Dimensions } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Image, Text, Dimensions, Alert, Pressable } from 'react-native';
 import { kediarkaplan, logo } from "../../assent/images";
 import ReusableTextInput from "../component/TextInput";
 import ReusableButton from "../component/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { register, clearError } from "../redux/UserSlice";
 
 const { width, height } = Dimensions.get("window");
 
-
 const scaleSize = (size) => {
-  const scale = width / 375; 
+  const scale = width / 375;
   return size * scale;
 };
 
-const RegisterScreen = ({navigation}) => {
-  const [name, setName] = useState(""); 
+const RegisterScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { error, isAuth } = useSelector((state) => state.user);
+
+  const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [number, setNumber] = useState("");
-  const [adres, setAdres] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- 
+
+
+  useEffect(() => {
+    if (isAuth) {
+      // kimlik doğrulandıysa otomatik olarak isAuth değeri değişicek ve yönlendirmeyi RootNaviagtiyon kendiliğinde yapıcak
+      
+    }
+  }, [isAuth, navigation]);
+
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Kayıt Hatası", error);
+      dispatch(clearError());
+    }
+  }, [error, dispatch]);
+
+
+  const validateInputs = () => {
+    if (!name.trim()) {
+      Alert.alert("Hata", "Lütfen adınızı girin.");
+      return false;
+    }
+    if (!surname.trim()) {
+      Alert.alert("Hata", "Lütfen soyadınızı girin.");
+      return false;
+    }
+    if (!number.trim()) {
+      Alert.alert("Hata", "Lütfen telefon numaranızı girin.");
+      return false;
+    }
+
+   
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Hata", "Lütfen geçerli bir e-posta adresi girin.");
+      return false;
+    }
+
+   
+    if (password.length < 6) {
+      Alert.alert("Hata", "Şifre en az 6 karakter olmalıdır.");
+      return false;
+    }
+
+    return true;
+  };
+
+  // Kayıt işlemi
+  const handleRegister = () => {
+    if (validateInputs()) {
+      // Redux register action'ını çağırdığım yer burası yani userSlice içindeki actionlar
+      dispatch(register({ name, lastName, email, password }));
+
+
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image style={styles.backgroundImage} source={kediarkaplan} />
-                 
+
       <View style={styles.headerContainer}>
         <Image style={styles.logo} source={logo} />
         <Text style={styles.title}>Pet</Text>
@@ -32,41 +93,45 @@ const RegisterScreen = ({navigation}) => {
       <ReusableTextInput
         placeholder='Adınız:'
         value={name}
-        onChangeText={(value) => setName(value)}
+        onChangeText={setName}
         style={styles.TextInput}
       />
       <ReusableTextInput
         placeholder='Soyadınız:'
         value={surname}
-        onChangeText={(value) => setSurname(value)}
+        onChangeText={setSurname}
         style={styles.TextInput}
       />
       <ReusableTextInput
         placeholder='Telefon Numaranız:'
         value={number}
-        onChangeText={(value) => setNumber(value)}
+        onChangeText={setNumber}
         style={styles.TextInput}
       />
       <ReusableTextInput
         placeholder='E-posta Adresiniz:'
-        value={adres}
-        onChangeText={(value) => setAdres(value)}
+        value={email}
+        onChangeText={setEmail}
         style={styles.TextInput}
       />
       <ReusableTextInput
         placeholder='Şifreniz:'
         value={password}
-        onChangeText={(value) => setPassword(value)}
+        onChangeText={setPassword}
         style={styles.TextInput}
         secureTextEntry={true}
       />
-      <ReusableButton 
+      <ReusableButton
         style={styles.Button}
         title="Kaydol"
-        onPress={() => navigation.navigate("HomeScreen")}
-        backgroundColor='white' 
+        onPress={handleRegister}
+        backgroundColor='white'
         textColor="#D29596"
+
       />
+      <Pressable onPress={() => navigation.navigate("Login")}>
+        <Text style={{ fontWeight: 'bold', marginTop: 30 }}>Already have an account? Login</Text>
+      </Pressable>
     </View>
   );
 };
@@ -94,7 +159,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "bold",
     top: scaleSize(35),
-    right:scaleSize(42),
+    right: scaleSize(42),
     marginLeft: scaleSize(10),
   },
   subtitle: {
@@ -106,29 +171,29 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     position: 'absolute',
-    width: width, 
-    height: height, 
+    width: width,
+    height: height,
     top: 0,
     bottom: 0,
     left: 0,
     zIndex: -1,
   },
   Text: {
-    fontSize: width * 0.08, 
+    fontSize: width * 0.08,
     color: 'black',
     fontWeight: 'bold',
-    alignSelf: 'center', 
+    alignSelf: 'center',
     marginTop: height * 0.02
   },
   RightcContainer: {
     position: 'absolute',
-    left: width * 0.05, 
-    top: height * 0.1, 
+    left: width * 0.05,
+    top: height * 0.1,
     alignItems: 'center',
   },
   RightImages: {
     width: width * 0.3,
-    height: width * 0.3, 
+    height: width * 0.3,
     resizeMode: 'contain',
   },
   TextInput: {
@@ -142,6 +207,7 @@ const styles = StyleSheet.create({
     marginTop: scaleSize(20),
     width: "60%",
     alignSelf: "center",
+    top: scaleSize(255),
   }
 });
 
