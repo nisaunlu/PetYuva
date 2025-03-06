@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
-// Simple MessagesScreen component
+
 export const MessagesScreen = () => {
   const [messages, setMessages] = useState([
     { id: '1', sender: 'Ali', message: 'Merhaba, nasılsınız?', time: '14:30' },
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: 'rgb(227,221,207)',
   },
   screenTitle: {
     fontSize: 22,

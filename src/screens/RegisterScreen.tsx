@@ -26,8 +26,8 @@ const RegisterScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (isAuth) {
-      // kimlik doğrulandıysa otomatik olarak isAuth değeri değişicek ve yönlendirmeyi RootNaviagtiyon kendiliğinde yapıcak
-      
+      // kimlik doğrulandıysa otomatik olarak isAuth değeri değişicek ve yönlendirmeyi RootNaviagtiyon kendiliğinde yapıcak Gızlar
+
     }
   }, [isAuth, navigation]);
 
@@ -54,14 +54,14 @@ const RegisterScreen = ({ navigation }) => {
       return false;
     }
 
-   
+
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (!emailRegex.test(email)) {
       Alert.alert("Hata", "Lütfen geçerli bir e-posta adresi girin.");
       return false;
     }
 
-   
+
     if (password.length < 6) {
       Alert.alert("Hata", "Şifre en az 6 karakter olmalıdır.");
       return false;
@@ -73,7 +73,7 @@ const RegisterScreen = ({ navigation }) => {
   // Kayıt işlemi
   const handleRegister = () => {
     if (validateInputs()) {
-      // Redux register action'ını çağırdığım yer burası yani userSlice içindeki actionlar
+      // Redux register action'ını çağırdığım yer burası yani userSlice içindeki actionlar burda Gızlar
       dispatch(register({ name, lastName, email, password }));
 
 
@@ -129,14 +129,14 @@ const RegisterScreen = ({ navigation }) => {
         textColor="#D29596"
 
       />
-        <TouchableOpacity
-                       style={styles.registerContainer}
-                       onPress={() => navigation.navigate("Login")}
-       
-                   >
-                       <Text style={styles.registerText}>Hesabın varsa? Giriş Yap</Text>
-                   </TouchableOpacity>
-     
+      <TouchableOpacity
+        style={styles.registerContainer}
+        onPress={() => navigation.navigate("Login")}
+
+      >
+        <Text style={styles.registerText}>Hesabın varsa? Giriş Yap</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -217,14 +217,14 @@ const styles = StyleSheet.create({
   registerContainer: {
     position: "absolute",
     bottom: scaleSize(60),
-    marginLeft:scaleSize(95),
-},
-registerText: {
+    marginLeft: scaleSize(95),
+  },
+  registerText: {
     textAlign: "center",
     color: "black",
     fontSize: scaleSize(16),
     top: -scaleSize(52),
-},
+  },
 });
 
 export default RegisterScreen;

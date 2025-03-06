@@ -1,10 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // react-native-vector-icons kullanıyoruz
+import { Image } from 'react-native';
+import { Home, Message, userIcon, chatBoxIcon } from '../../assent/images';
 import { HomeScreen, ProfileScreen, MessagesScreen, ChatbotScreen } from '../screens/index';
 
-// Bottom Tab Navigator'ı oluşturuyoruz
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -14,35 +14,42 @@ const TabNavigator = () => {
         name="Anasayfa" 
         component={HomeScreen} 
         options={{ 
-          tabBarIcon: ({ color, size }) => <Icon name="home" color={color} size={size} />,
+          tabBarIcon: ({color, size}) => (
+            <Image source={Home} style={{width: size, height: size, tintColor: color}} />
+          )
         }} 
       />
       <Tab.Screen 
         name="Mesajlar" 
         component={MessagesScreen} 
         options={{ 
-          tabBarIcon: ({ color, size }) => <Icon name="inbox" color={color} size={size} />,
+          tabBarIcon: ({color, size}) => (
+            <Image source={Message} style={{width: size, height: size, tintColor: color}} />
+          )
         }} 
       />
       <Tab.Screen 
         name="Chatbot" 
         component={ChatbotScreen} 
         options={{ 
-          tabBarIcon: ({ color, size }) => <Icon name="chat-bubble" color={color} size={size} />,
+          tabBarIcon: ({color, size}) => (
+            <Image source={chatBoxIcon} style={{width: size, height: size, tintColor: color}} />
+          )
         }} 
       />
       <Tab.Screen 
         name="Profilim" 
         component={ProfileScreen} 
         options={{ 
-          tabBarIcon: ({ color, size }) => <Icon name="person" color={color} size={size} />,
+          tabBarIcon: ({color, size}) => (
+            <Image source={userIcon} style={{width: size, height: size, tintColor: color}} />
+          )
         }} 
       />
     </Tab.Navigator>
   );
 };
 
-// Stack Navigator'ı oluşturuyoruz
 const Stack = createStackNavigator();
 
 const UserStack = () => {
