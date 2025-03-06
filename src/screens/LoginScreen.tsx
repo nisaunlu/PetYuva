@@ -20,11 +20,11 @@ const LoginScreen = ({ navigation }) => {
     // Eğer kimlik doğrulama başarılıysa, kullanıcıyı yönlendir
     useEffect(() => {
         if (isAuth) {
-            navigation.navigate("UserStack"); // UserStack'e yönlendir veya ana ekranınıza
+            navigation.navigate("UserStack"); 
         }
     }, [isAuth, navigation]);
 
-    // Hata durumunda Alert göster
+    // Hata durumunun kontölü burda sağlanıyor
     useEffect(() => {
         if (error) {
             Alert.alert("Giriş Hatası", error);
@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
             return;
         }
 
-        // Redux action'ını çağır
+        // Redux action'ını çağır Gızlar
         dispatch(login({ email, password }));
     };
 

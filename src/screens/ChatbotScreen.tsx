@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: 'rgb(227,221,207)',
   },
   screenTitle: {
     fontSize: 22,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   sendButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#D29596',
     padding: 12,
     borderRadius: 20,
   },
