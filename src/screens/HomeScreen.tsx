@@ -35,7 +35,7 @@ const ilanlar = [
     image: kedi3
   },
   { 
-    id: '5', 
+    id: '4', 
     ad: 'Şerif Atılmış', 
     tur: 'Kedi', 
     yas: '1', 
@@ -44,7 +44,7 @@ const ilanlar = [
     image: kedi5
   },
   { 
-    id: '1', 
+    id: '5', 
     ad: 'Maya Ünlü', 
     tur: 'Kedi', 
     yas: '4', 
@@ -53,7 +53,7 @@ const ilanlar = [
     image: maya
   },
   { 
-    id: '3', 
+    id: '6', 
     ad: 'Pamuk', 
     tur: 'Kedi', 
     yas: '1', 
