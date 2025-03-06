@@ -74,7 +74,7 @@ const RegisterScreen = ({ navigation }) => {
   const handleRegister = () => {
     if (validateInputs()) {
       // Redux register action'ını çağırdığım yer burası yani userSlice içindeki actionlar burda Gızlar
-      dispatch(register({ name, lastName, email, password }));
+      dispatch(register({ name, surname, email, password }));
 
 
     }

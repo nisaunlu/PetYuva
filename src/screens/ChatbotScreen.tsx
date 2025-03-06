@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 
-// Simple ChatbotScreen component
+// Örnek ilanlar
+const sampleListings = [
+  { id: '101', type: 'köpek', breed: 'Golden Retriever', age: '2 yaşında', location: 'İstanbul', description: 'Sevecen ve oyuncu bir köpek.' },
+  { id: '102', type: 'kedi', breed: 'British Shorthair', age: '1 yaşında', location: 'Ankara', description: 'Sakin ve uysal bir kedi.' },
+  { id: '103', type: 'köpek', breed: 'Siberian Husky', age: '3 yaşında', location: 'İzmir', description: 'Soğuğa dayanıklı ve enerjik bir dost.' },
+];
+
 export const ChatbotScreen = () => {
   const [messages, setMessages] = useState([
     { id: '1', isBot: true, text: 'Merhaba! Size nasıl yardımcı olabilirim?' },
-    { id: '2', isBot: false, text: 'Köpek sahiplenmek istiyorum.' },
-    { id: '3', isBot: true, text: 'Harika! Size uygun bir köpek bulmanız için birkaç soru sormak istiyorum. Yaşadığınız yer nasıl bir yer?' },
   ]);
   const [inputText, setInputText] = useState('');
 
   const sendMessage = () => {
     if (inputText.trim() === '') return;
-    
+
     const newMessage = {
       id: Date.now().toString(),
       isBot: false,
@@ -21,16 +25,60 @@ export const ChatbotScreen = () => {
     
     setMessages([...messages, newMessage]);
     setInputText('');
-    
-    // Simulate bot response
+
+    // Bot yanıtı oluştur
     setTimeout(() => {
-      const botResponse = {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Anladım, başka sorularınız var mı?'
-      };
+      const botResponse = getBotResponse(inputText.toLowerCase());
       setMessages(prev => [...prev, botResponse]);
     }, 1000);
+  };
+
+  // Kullanıcının mesajına göre yanıt oluştur
+  const getBotResponse = (userText: string) => {
+    if (userText.includes('köpek')) {
+      const dogListings = sampleListings.filter(item => item.type === 'köpek');
+      return {
+        id: (Date.now() + 1).toString(),
+        isBot: true,
+        text: `İşte bazı köpek ilanları:\n\n` + dogListings.map(dog => 
+          `🐶 ${dog.breed} - ${dog.age}\n📍 ${dog.location}\n📌 ${dog.description}`).join('\n\n')
+      };
+    } 
+    if (userText.includes('kedi')) {
+      const catListings = sampleListings.filter(item => item.type === 'kedi');
+      return {
+        id: (Date.now() + 1).toString(),
+        isBot: true,
+        text: `İşte bazı kedi ilanları:\n\n` + catListings.map(cat => 
+          `🐱 ${cat.breed} - ${cat.age}\n📍 ${cat.location}\n📌 ${cat.description}`).join('\n\n')
+      };
+    }
+    if (userText.includes('fiyat')) {
+      return {
+        id: (Date.now() + 1).toString(),
+        isBot: true,
+        text: 'Sahiplendirme ilanlarımız ücretsizdir. Ancak veteriner masraflarını göz önünde bulundurmalısınız.'
+      };
+    }
+    if (userText.includes('bakımı')) {
+      return {
+        id: (Date.now() + 1).toString(),
+        isBot: true,
+        text: 'Evcil hayvan bakımı, düzenli beslenme, egzersiz ve veteriner kontrollerini içerir. Daha fazla detay için bir veteriner ile görüşebilirsiniz.'
+      };
+    }
+    if (userText.includes('aşı')) {
+      return {
+        id: (Date.now() + 1).toString(),
+        isBot: true,
+        text: 'Köpek ve kediler için temel aşılar kuduz, karma ve parazit aşılarıdır. Detaylar için bir veterinere danışabilirsiniz.'
+      };
+    }
+    return {
+      id: (Date.now() + 1).toString(),
+      isBot: true,
+      text: 'Anladım! Daha fazla detay verir misiniz? Örneğin "köpek sahiplenmek istiyorum" veya "kedi bakımı hakkında bilgi alabilir miyim?"'
+    };
   };
 
   return (
@@ -65,7 +113,6 @@ export const ChatbotScreen = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -123,5 +170,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 
 export default ChatbotScreen;
