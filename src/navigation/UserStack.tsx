@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image } from 'react-native';
 import { Home, Message, userIcon, chatBoxIcon } from '../../assent/images';
 import { HomeScreen, ProfileScreen, MessagesScreen, ChatbotScreen } from '../screens/index';
+import MessageDetails from '../screens/MessageDetails';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +43,7 @@ const TabNavigator = () => {
         component={ProfileScreen} 
         options={{ 
           tabBarIcon: ({color, size}) => (
-            <Image source={userIcon} style={{width: size, height: size, tintColor: color}} />
+            <Image source={userIcon} style={{width: size, height: size, tintColor: color,resizeMode:'contain'}} />
           )
         }} 
       />
@@ -59,6 +60,8 @@ const UserStack = () => {
       initialRouteName='Home'>
       <Stack.Screen name={'Home'} component={TabNavigator} />
       <Stack.Screen name={'Profile'} component={ProfileScreen} />
+      <Stack.Screen name={'MessageDetails'} component={MessageDetails} />
+
     </Stack.Navigator>
   );
 };
