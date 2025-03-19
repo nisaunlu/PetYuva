@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
+export const MessagesScreen = ({ navigation }) => {
 
-export const MessagesScreen = () => {
   const [messages, setMessages] = useState([
     { id: '1', sender: 'Ali', message: 'Merhaba, nasılsınız?', time: '14:30' },
     { id: '2', sender: 'Ayşe', message: 'Köpeğinizle ilgileniyorum. Hala sahiplendirme için uygun mu?', time: '12:15' },
@@ -12,7 +12,10 @@ export const MessagesScreen = () => {
   ]);
 
   const renderMessageItem = ({ item }) => (
-    <TouchableOpacity style={styles.messageItem}>
+    <TouchableOpacity
+      style={styles.messageItem}
+      onPress={() => navigation.navigate("MessageDetails", { sender: item.sender, message: item.message ,time:item.time})}
+    >
       <View style={styles.messageBubble}>
         <Text style={styles.senderName}>{item.sender}</Text>
         <Text style={styles.messageText}>{item.message}</Text>

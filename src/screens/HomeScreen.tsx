@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, FlatList, Text, Dimensions, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
-import { kedi1,kedi2,kedi3,kedi4 ,maya,kedi5} from '../../assent/images'; 
+import { kedi1, kedi2, kedi3, kedi4, maya, kedi5 } from '../../assent/images'; 
 
 const { width } = Dimensions.get('window');
 const scaleSize = (size) => (width / 375) * size;
-
 
 const ilanlar = [
   { 
@@ -14,7 +13,8 @@ const ilanlar = [
     yas: '2', 
     sehir: 'İstanbul',
     detay: 'Sevimli, oyun sever bir kedi. Aşıları yapılmış ve sağlıklı.',
-    image: kedi1
+    image: kedi1,
+    sahibi: "Nuran Güler"
   },
   { 
     id: '2', 
@@ -23,7 +23,8 @@ const ilanlar = [
     yas: '3', 
     sehir: 'Ankara',
     detay: 'Eğitimli, çocuklarla iyi anlaşabilen bi kedi.',
-    image: kedi2
+    image: kedi2,
+    sahibi: "Nuran Güler"
   },
   { 
     id: '3', 
@@ -32,7 +33,8 @@ const ilanlar = [
     yas: '1', 
     sehir: 'İzmir',
     detay: 'çok tatlı tüylü bir kedi.',
-    image: kedi3
+    image: kedi3,
+    sahibi: "Nuran Güler"
   },
   { 
     id: '4', 
@@ -41,7 +43,8 @@ const ilanlar = [
     yas: '1', 
     sehir: 'Düzce',
     detay: 'öldü ama hala kalbimde yaşıyor.',
-    image: kedi5
+    image: kedi5,
+    sahibi: "Nuran Güler"
   },
   { 
     id: '5', 
@@ -50,7 +53,8 @@ const ilanlar = [
     yas: '4', 
     sehir: 'İstanbul',
     detay: 'Saldırgan ve rahatına düşkün bir kedidir. Aşıları yapılmış ve sağlıklı.',
-    image: maya
+    image: maya,
+    sahibi: "Nisa Ünlü"
   },
   { 
     id: '6', 
@@ -59,19 +63,32 @@ const ilanlar = [
     yas: '1', 
     sehir: 'Gaziantep',
     detay: 'çok tatlı tüylü bir kedi.',
-    image: kedi4
+    image: kedi4,
+    sahibi: "Nuran Güler",
   },
 ];
 
-
-
-export const HomeScreen = () => {
+export const HomeScreen = ({ navigation }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   const openDetailModal = (item) => {
     setSelectedItem(item);
     setModalVisible(true);
+  };
+
+  const handleSendMessage = () => {
+    if (selectedItem) {
+      setModalVisible(false);
+      navigation.navigate("MessageDetails", { 
+        sender: selectedItem.sahibi,
+        message: `Merhaba, ${selectedItem.ad} isimli hayvanınızla ilgileniyorum.`,
+        time: new Date().toLocaleTimeString([], { 
+          hour: '2-digit', 
+          minute: '2-digit' 
+        })
+      });
+    }
   };
 
   const renderItem = ({ item }) => (
@@ -97,7 +114,6 @@ export const HomeScreen = () => {
         keyExtractor={(item) => item.id} 
       />
 
-     
       <Modal
         animationType="slide"
         transparent={true}
@@ -114,13 +130,23 @@ export const HomeScreen = () => {
                 <Text style={styles.modalDetailText}>Yaş: {selectedItem.yas}</Text>
                 <Text style={styles.modalDetailText}>Şehir: {selectedItem.sehir}</Text>
                 <Text style={styles.modalDetailText}>{selectedItem.detay}</Text>
+                <Text style={styles.detailText}>Sahiplendiren: {selectedItem.sahibi}</Text>
                 
-                <TouchableOpacity 
-                  style={styles.closeButton} 
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.closeButtonText}>Mesaj Gönder</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity 
+                    style={styles.closeButton} 
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <Text style={styles.closeButtonText}>Kapat</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={styles.messageButton} 
+                    onPress={handleSendMessage}
+                  >
+                    <Text style={styles.messageButtonText}>Mesaj Gönder</Text>
+                  </TouchableOpacity>
+                </View>
               </>
             )}
           </View>
@@ -129,9 +155,10 @@ export const HomeScreen = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: { 
-    backgroundColor:'rgb(227,221,207)',
+    backgroundColor: 'rgb(227,221,207)',
     flex: 1, 
     padding: 5 
   },
@@ -155,7 +182,8 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   detailText: {
-    marginBottom: 5
+    marginBottom: 5,
+    fontWeight: 'bold',
   },
   detailButton: {
     backgroundColor: '#D29596',
@@ -195,13 +223,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 15
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 10
+  },
   closeButton: {
+    backgroundColor: '#999',
+    padding: 10,
+    borderRadius: 5,
+    flex: 1,
+    marginRight: 5
+  },
+  closeButtonText: {
+    color: 'white',
+    textAlign: 'center'
+  },
+  messageButton: {
     backgroundColor: '#D29596',
     padding: 10,
     borderRadius: 5,
-    width: '100%'
+    flex: 1,
+    marginLeft: 5
   },
-  closeButtonText: {
+  messageButtonText: {
     color: 'white',
     textAlign: 'center'
   }
