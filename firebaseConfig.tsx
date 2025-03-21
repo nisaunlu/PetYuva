@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";  // Firestore'u ekledik
 
 const firebaseConfig = {
   apiKey: "AIzaSyAJnhnwUEulLE8KAiXlGqzJ_WxsyWiRmCo",
@@ -13,6 +14,8 @@ const firebaseConfig = {
 
 // Eğer Firebase zaten başlatılmışsa tekrar başlatma
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export default app;
 
+// Firestore ve Authentication başlatma
+export const auth = getAuth(app);
+export const db = getFirestore(app);  // Firestore bağlantısını export ettik
+export default app;
