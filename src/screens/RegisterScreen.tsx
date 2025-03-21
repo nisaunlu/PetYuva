@@ -109,7 +109,7 @@ const RegisterScreen = ({ navigation }) => {
         style={styles.TextInput}
       />
       <ReusableTextInput
-        placeholder='E-posta Adresiniz:'
+        placeholder='Email Adresiniz:'
         value={email}
         onChangeText={setEmail}
         style={styles.TextInput}
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "black",
     fontSize: scaleSize(16),
-    top: -scaleSize(52),
+    top: scaleSize(12),
   },
 });
 
