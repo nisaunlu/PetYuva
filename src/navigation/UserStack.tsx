@@ -5,6 +5,8 @@ import { Image } from 'react-native';
 import { Home, Message, userIcon, chatBoxIcon } from '../../assent/images';
 import { HomeScreen, ProfileScreen, MessagesScreen, ChatbotScreen } from '../screens/index';
 import MessageDetails from '../screens/MessageDetails';
+import ProfileEdit from '../screens/ProfileEdit';
+import NewListing from '../screens/NewListing';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +62,8 @@ const UserStack = () => {
       initialRouteName='Home'>
       <Stack.Screen name={'Home'} component={TabNavigator} />
       <Stack.Screen name={'Profile'} component={ProfileScreen} />
+      <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
+      <Stack.Screen name="NewListing" component= {NewListing} />
       <Stack.Screen name={'MessageDetails'} component={MessageDetails} />
 
     </Stack.Navigator>
