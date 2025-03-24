@@ -40,7 +40,7 @@ const handleTextChange = (newText) => {
           style={[styles.textInput, styles.textAreaInput]} 
           value={text} 
           onChangeText={handleTextChange} 
-          placeholder="Açıklama" 
+          placeholder="Açıklama(isteğe bağlıdır)" 
         />
         <TouchableOpacity style={styles.actionButton}>
           <Text style={styles.actionButtonText}>İlan Oluştur</Text>

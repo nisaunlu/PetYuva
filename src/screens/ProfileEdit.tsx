@@ -29,7 +29,7 @@ const ProfileEdit = () => {
           style={[styles.textInput, styles.textAreaInput]} 
           value={text} 
           onChangeText={handleTextChange} 
-          placeholder="Hakkımda" 
+          placeholder="Hakkımda(isteğe bağlıdır)" 
         />
         
         <TouchableOpacity style={styles.actionButton}>
