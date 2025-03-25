@@ -1,16 +1,44 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 // Örnek ilanlar
 const sampleListings = [
-  { id: '101', type: 'köpek', breed: 'Golden Retriever', age: '2 yaşında', location: 'İstanbul', description: 'Sevecen ve oyuncu bir köpek.' },
-  { id: '102', type: 'kedi', breed: 'British Shorthair', age: '1 yaşında', location: 'Ankara', description: 'Sakin ve uysal bir kedi.' },
-  { id: '103', type: 'köpek', breed: 'Siberian Husky', age: '3 yaşında', location: 'İzmir', description: 'Soğuğa dayanıklı ve enerjik bir dost.' },
+  {
+    id: '101',
+    type: 'köpek',
+    breed: 'Golden Retriever',
+    age: '2 yaşında',
+    location: 'İstanbul',
+    description: 'Sevecen ve oyuncu bir köpek.',
+  },
+  {
+    id: '102',
+    type: 'kedi',
+    breed: 'British Shorthair',
+    age: '1 yaşında',
+    location: 'Ankara',
+    description: 'Sakin ve uysal bir kedi.',
+  },
+  {
+    id: '103',
+    type: 'köpek',
+    breed: 'Siberian Husky',
+    age: '3 yaşında',
+    location: 'İzmir',
+    description: 'Soğuğa dayanıklı ve enerjik bir dost.',
+  },
 ];
 
-export const ChatbotScreen = () => {
+export const ChatbotScreen = navigation => {
   const [messages, setMessages] = useState([
-    { id: '1', isBot: true, text: 'Merhaba! Size nasıl yardımcı olabilirim?' },
+    {id: '1', isBot: true, text: 'Merhaba! Size nasıl yardımcı olabilirim?'},
   ]);
   const [inputText, setInputText] = useState('');
 
@@ -20,9 +48,9 @@ export const ChatbotScreen = () => {
     const newMessage = {
       id: Date.now().toString(),
       isBot: false,
-      text: inputText
+      text: inputText,
     };
-    
+
     setMessages([...messages, newMessage]);
     setInputText('');
 
@@ -40,65 +68,90 @@ export const ChatbotScreen = () => {
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: `İşte bazı köpek ilanları:\n\n` + dogListings.map(dog => 
-          `🐶 ${dog.breed} - ${dog.age}\n📍 ${dog.location}\n📌 ${dog.description}`).join('\n\n')
+        text:
+          `İşte bazı köpek ilanları:\n\n` +
+          dogListings
+            .map(
+              dog =>
+                `🐶 ${dog.breed} - ${dog.age}\n📍 ${dog.location}\n📌 ${dog.description}`,
+            )
+            .join('\n\n'),
       };
-    } 
+    }
     if (userText.includes('kedi')) {
       const catListings = sampleListings.filter(item => item.type === 'kedi');
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: `İşte bazı kedi ilanları:\n\n` + catListings.map(cat => 
-          `🐱 ${cat.breed} - ${cat.age}\n📍 ${cat.location}\n📌 ${cat.description}`).join('\n\n')
+        text:
+          `İşte bazı kedi ilanları:\n\n` +
+          catListings
+            .map(
+              cat =>
+                `🐱 ${cat.breed} - ${cat.age}\n📍 ${cat.location}\n📌 ${cat.description}`,
+            )
+            .join('\n\n'),
       };
     }
     if (userText.includes('fiyat')) {
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'Sahiplendirme ilanlarımız ücretsizdir. Ancak veteriner masraflarını göz önünde bulundurmalısınız.'
+        text: 'Sahiplendirme ilanlarımız ücretsizdir. Ancak veteriner masraflarını göz önünde bulundurmalısınız.',
       };
     }
     if (userText.includes('bakımı')) {
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'Evcil hayvan bakımı, düzenli beslenme, egzersiz ve veteriner kontrollerini içerir. Daha fazla detay için bir veteriner ile görüşebilirsiniz.'
+        text: 'Evcil hayvan bakımı, düzenli beslenme, egzersiz ve veteriner kontrollerini içerir. Daha fazla detay için bir veteriner ile görüşebilirsiniz.',
       };
     }
     if (userText.includes('aşı')) {
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'Köpek ve kediler için temel aşılar kuduz, karma ve parazit aşılarıdır. Detaylar için bir veterinere danışabilirsiniz.'
+        text: 'Köpek ve kediler için temel aşılar kuduz, karma ve parazit aşılarıdır. Detaylar için bir veterinere danışabilirsiniz.',
       };
     }
     return {
       id: (Date.now() + 1).toString(),
       isBot: true,
-      text: 'Anladım! Daha fazla detay verir misiniz? Örneğin "köpek sahiplenmek istiyorum" veya "kedi bakımı hakkında bilgi alabilir miyim?"'
+      text: 'Anladım! Daha fazla detay verir misiniz? Örneğin "köpek sahiplenmek istiyorum" veya "kedi bakımı hakkında bilgi alabilir miyim?"',
     };
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.screenTitle}>Pet Asistanı</Text>
-      
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}>
+          <Ionicons name="chevron-back" size={24} color="#D29596" />
+        </TouchableOpacity>
+        <Text style={styles.screenTitle}>Pet Asistanı</Text>
+        <View style={{width: 44}} />
+      </View>
+
       <ScrollView style={styles.chatContainer}>
         {messages.map(message => (
-          <View 
-            key={message.id} 
+          <View
+            key={message.id}
             style={[
-              styles.chatBubble, 
-              message.isBot ? styles.botBubble : styles.userBubble
-            ]}
-          >
+              styles.chatBubble,
+              message.isBot ? styles.botBubble : styles.userBubble,
+            ]}>
             <Text style={styles.chatText}>{message.text}</Text>
           </View>
         ))}
       </ScrollView>
-      
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -118,6 +171,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: 'rgb(227,221,207)',
+  },
+  backButton: {
+    padding: 8,
   },
   screenTitle: {
     fontSize: 22,
@@ -170,6 +226,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 export default ChatbotScreen;
