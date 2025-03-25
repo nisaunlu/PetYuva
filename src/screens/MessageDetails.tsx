@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,50 +8,51 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
-  FlatList
-} from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+  FlatList,
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const MessageDetails = ({ route, navigation }) => {
-  const { sender, message, time } = route.params;
-  const [newMessage, setNewMessage] = useState("");
+const MessageDetails = ({route, navigation}) => {
+  const {sender, message, time} = route.params;
+  const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState([
     {
-      id: "1",
+      id: '1',
       text: message,
-      time: time || "12:30",
+      time: time || '12:30',
       sender: sender,
-      isSender: false
-    }
+      isSender: false,
+    },
   ]);
 
   const sendMessage = () => {
-    if (newMessage.trim() === "") return;
-    
-    const currentTime = new Date().toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    if (newMessage.trim() === '') return;
+
+    const currentTime = new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
     });
-    
+
     setMessages([
       ...messages,
       {
         id: Date.now().toString(),
         text: newMessage,
         time: currentTime,
-        sender: "Me",
-        isSender: true
-      }
+        sender: 'Me',
+        isSender: true,
+      },
     ]);
-    
-    setNewMessage("");
+
+    setNewMessage('');
   };
 
-  const renderMessageItem = ({ item }) => (
-    <View style={[
-      styles.messageBubble,
-      item.isSender ? styles.sentMessage : styles.receivedMessage
-    ]}>
+  const renderMessageItem = ({item}) => (
+    <View
+      style={[
+        styles.messageBubble,
+        item.isSender ? styles.sentMessage : styles.receivedMessage,
+      ]}>
       <Text style={styles.messageText}>{item.text}</Text>
       <Text style={styles.messageTime}>{item.time}</Text>
     </View>
@@ -60,10 +61,9 @@ const MessageDetails = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
+          style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="#D29596" />
         </TouchableOpacity>
         <View style={styles.profileContainer}>
@@ -83,10 +83,9 @@ const MessageDetails = ({ route, navigation }) => {
       />
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-        style={styles.inputContainer}
-      >
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+        style={styles.inputContainer}>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
@@ -95,15 +94,14 @@ const MessageDetails = ({ route, navigation }) => {
             onChangeText={setNewMessage}
             multiline
           />
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.sendButton}
             onPress={sendMessage}
-            disabled={newMessage.trim() === ""}
-          >
-            <Ionicons 
-              name="send" 
-              size={20} 
-              color={newMessage.trim() === "" ? "#CCCCCC" : "#D29596"} 
+            disabled={newMessage.trim() === ''}>
+            <Ionicons
+              name="send"
+              size={20}
+              color={newMessage.trim() === '' ? '#CCCCCC' : '#D29596'}
             />
           </TouchableOpacity>
         </View>
@@ -118,8 +116,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(227,221,207)',
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
@@ -130,28 +128,28 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   profileContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginLeft: 12,
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#D29596",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#D29596',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avatarText: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   senderName: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginLeft: 12,
-    color: "#333333",
+    color: '#333333',
   },
   messagesList: {
     padding: 16,
@@ -161,12 +159,12 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 16,
     marginBottom: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.1,
     shadowRadius: 1,
     elevation: 1,
-    marginLeft:80,
+    marginLeft: 80,
   },
   sentMessage: {
     alignSelf: 'flex-end',
@@ -180,11 +178,11 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 16,
-    color: "#333333",
+    color: '#333333',
   },
   messageTime: {
     fontSize: 11,
-    color: "#666666",
+    color: '#666666',
     alignSelf: 'flex-end',
     marginTop: 4,
   },

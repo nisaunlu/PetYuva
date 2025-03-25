@@ -1,69 +1,72 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, Text, Dimensions, Alert, Pressable, TouchableOpacity } from 'react-native';
-import { kediarkaplan, logo } from "../../assent/images";
-import ReusableTextInput from "../component/TextInput";
-import ReusableButton from "../component/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { register, clearError } from "../redux/UserSlice";
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  Dimensions,
+  Alert,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
+import {kediarkaplan, logo} from '../../assent/images';
+import ReusableTextInput from '../component/TextInput';
+import ReusableButton from '../component/Button';
+import {useDispatch, useSelector} from 'react-redux';
+import {register, clearError} from '../redux/UserSlice';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
-const scaleSize = (size) => {
+const scaleSize = size => {
   const scale = width / 375;
   return size * scale;
 };
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({navigation}) => {
   const dispatch = useDispatch();
-  const { error, isAuth } = useSelector((state) => state.user);
+  const {error, isAuth} = useSelector(state => state.user);
 
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [number, setNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [number, setNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (isAuth) {
       // kimlik doğrulandıysa otomatik olarak isAuth değeri değişicek ve yönlendirmeyi RootNaviagtiyon kendiliğinde yapıcak Gızlar
-
     }
   }, [isAuth, navigation]);
 
-
   useEffect(() => {
     if (error) {
-      Alert.alert("Kayıt Hatası", error);
+      Alert.alert('Kayıt Hatası', error);
       dispatch(clearError());
     }
   }, [error, dispatch]);
 
-
   const validateInputs = () => {
     if (!name.trim()) {
-      Alert.alert("Hata", "Lütfen adınızı girin.");
+      Alert.alert('Hata', 'Lütfen adınızı girin.');
       return false;
     }
     if (!surname.trim()) {
-      Alert.alert("Hata", "Lütfen soyadınızı girin.");
+      Alert.alert('Hata', 'Lütfen soyadınızı girin.');
       return false;
     }
     if (!number.trim()) {
-      Alert.alert("Hata", "Lütfen telefon numaranızı girin.");
+      Alert.alert('Hata', 'Lütfen telefon numaranızı girin.');
       return false;
     }
-
 
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     if (!emailRegex.test(email)) {
-      Alert.alert("Hata", "Lütfen geçerli bir e-posta adresi girin.");
+      Alert.alert('Hata', 'Lütfen geçerli bir e-posta adresi girin.');
       return false;
     }
 
-
     if (password.length < 6) {
-      Alert.alert("Hata", "Şifre en az 6 karakter olmalıdır.");
+      Alert.alert('Hata', 'Şifre en az 6 karakter olmalıdır.');
       return false;
     }
 
@@ -74,9 +77,7 @@ const RegisterScreen = ({ navigation }) => {
   const handleRegister = () => {
     if (validateInputs()) {
       // Redux register action'ını çağırdığım yer burası yani userSlice içindeki actionlar burda Gızlar
-      dispatch(register({ name, surname, email, password }));
-
-
+      dispatch(register({name, surname, email, password}));
     }
   };
 
@@ -91,31 +92,31 @@ const RegisterScreen = ({ navigation }) => {
       </View>
 
       <ReusableTextInput
-        placeholder='Adınız:'
+        placeholder="Adınız:"
         value={name}
         onChangeText={setName}
         style={styles.TextInput}
       />
       <ReusableTextInput
-        placeholder='Soyadınız:'
+        placeholder="Soyadınız:"
         value={surname}
         onChangeText={setSurname}
         style={styles.TextInput}
       />
       <ReusableTextInput
-        placeholder='Telefon Numaranız:'
+        placeholder="Telefon Numaranız:"
         value={number}
         onChangeText={setNumber}
         style={styles.TextInput}
       />
       <ReusableTextInput
-        placeholder='Email Adresiniz:'
+        placeholder="Email Adresiniz:"
         value={email}
         onChangeText={setEmail}
         style={styles.TextInput}
       />
       <ReusableTextInput
-        placeholder='Şifreniz:'
+        placeholder="Şifreniz:"
         value={password}
         onChangeText={setPassword}
         style={styles.TextInput}
@@ -125,18 +126,14 @@ const RegisterScreen = ({ navigation }) => {
         style={styles.Button}
         title="Kaydol"
         onPress={handleRegister}
-        backgroundColor='white'
+        backgroundColor="white"
         textColor="#D29596"
-
       />
       <TouchableOpacity
         style={styles.registerContainer}
-        onPress={() => navigation.navigate("Login")}
-
-      >
+        onPress={() => navigation.navigate('Login')}>
         <Text style={styles.registerText}>Hesabın varsa? Giriş Yap</Text>
       </TouchableOpacity>
-
     </View>
   );
 };
@@ -146,32 +143,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: scaleSize(50),
     width: '100%',
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     paddingHorizontal: scaleSize(20),
   },
   logo: {
     width: scaleSize(120),
     height: scaleSize(120),
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   title: {
     fontSize: scaleSize(30),
-    color: "black",
-    fontWeight: "bold",
+    color: 'black',
+    fontWeight: 'bold',
     top: scaleSize(35),
     right: scaleSize(42),
     marginLeft: scaleSize(10),
   },
   subtitle: {
     fontSize: scaleSize(30),
-    color: "black",
+    color: 'black',
     top: scaleSize(70),
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginLeft: -scaleSize(55),
   },
   backgroundImage: {
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     alignSelf: 'center',
-    marginTop: height * 0.02
+    marginTop: height * 0.02,
   },
   RightcContainer: {
     position: 'absolute',
@@ -203,25 +200,25 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     marginTop: scaleSize(5),
-    width: "95%",
+    width: '95%',
     top: scaleSize(255),
     color: '#D295C8',
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   Button: {
     marginTop: scaleSize(20),
-    width: "60%",
-    alignSelf: "center",
+    width: '60%',
+    alignSelf: 'center',
     top: scaleSize(255),
   },
   registerContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: scaleSize(60),
     marginLeft: scaleSize(95),
   },
   registerText: {
-    textAlign: "center",
-    color: "black",
+    textAlign: 'center',
+    color: 'black',
     fontSize: scaleSize(16),
     top: scaleSize(12),
   },
