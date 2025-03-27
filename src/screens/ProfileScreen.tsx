@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import {
   StyleSheet,
@@ -10,13 +9,6 @@ import {
   ScrollView,
 } from 'react-native';
 import {kedi2} from '../../assent/images';
-=======
-import React from "react";
-import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Text, ScrollView } from "react-native";
-import { kedi2 } from "../../assent/images";
-import ProfileEdit from "./ProfileEdit";
-import NewListing from "./NewListing";
->>>>>>> 2dc02fdc60bc6af148cb1726ad130b532353117e
 
 const {width, height} = Dimensions.get('window');
 
@@ -45,17 +37,15 @@ const ProfileScreen = ({navigation}) => {
       </View>
 
       <View style={styles.actionContainer}>
-      <TouchableOpacity 
-  style={styles.actionButton}
-  onPress={() => navigation.navigate("ProfileEdit")}
->
-  <Text style={styles.actionButtonText}>Profili Düzenle</Text>
-</TouchableOpacity>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => navigation.navigate('ProfileEdit')}>
+          <Text style={styles.actionButtonText}>Profili Düzenle</Text>
+        </TouchableOpacity>
 
-<TouchableOpacity 
-  style={styles.actionButton}
-  onPress={() => navigation.navigate("NewListing")}
->
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => navigation.navigate('NewListing')}>
           <Text style={styles.actionButtonText}>Yeni İlan Oluştur</Text>
         </TouchableOpacity>
       </View>

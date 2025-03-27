@@ -14,13 +14,6 @@ import {kedi1, kedi2, kedi3, kedi4, maya, kedi5} from '../../assent/images';
 const {width} = Dimensions.get('window');
 const scaleSize = size => (width / 375) * size;
 
-// interface Ilanlar{
-//   id : string ;
-//   ad : string;
-//   tur:
-
-// }
-
 const ilanlar = [
   {
     id: '1',
@@ -108,10 +101,6 @@ export const HomeScreen = ({navigation}) => {
     }
   };
 
-  const handleModalVisible = () => {
-    setModalVisible(false);
-  };
-  // component olarak oluşturabilirsin . item kısmını propsla almalısın
   const renderItem = ({item}) => (
     <View style={styles.card}>
       <Image style={styles.image} source={item.image} />
@@ -140,8 +129,7 @@ export const HomeScreen = ({navigation}) => {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={handleModalVisible} // ayrı bir foksiyon yazılmasını isteniyor
-      >
+        onRequestClose={() => setModalVisible(false)}>
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             {selectedItem && (
@@ -165,7 +153,7 @@ export const HomeScreen = ({navigation}) => {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity
                     style={styles.closeButton}
-                    onPress={handleModalVisible}>
+                    onPress={() => setModalVisible(false)}>
                     <Text style={styles.closeButtonText}>Kapat</Text>
                   </TouchableOpacity>
 
