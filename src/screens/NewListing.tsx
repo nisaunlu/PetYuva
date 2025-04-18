@@ -1,52 +1,90 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   ScrollView,
   View,
   StyleSheet,
   TouchableOpacity,
   Text,
+  Image,
 } from 'react-native';
-import TextInput2 from '../component/TextInput2';
+import { launchImageLibrary } from 'react-native-image-picker';
+import ReusableTextInput from "../component/TextInput";
 
 const NewListing = () => {
-  const [text, setText] = useState('');
-  const handleTextChange = newText => {
-    setText(newText);
+  const [formData, setFormData] = useState({
+    name: '',
+    type: '',
+    age: '',
+    city: '',
+    description: '',
+    image: null,
+  });
+
+  const handleChange = (key, value) => {
+    setFormData({ ...formData, [key]: value });
+  };
+
+  const pickImage = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        quality: 1,
+      },
+      (response) => {
+        if (response.didCancel) {
+          console.log('Kullanıcı iptal etti');
+        } else if (response.errorCode) {
+          console.log('Hata:', response.errorMessage);
+        } else {
+          const uri = response.assets?.[0]?.uri;
+          if (uri) {
+            setFormData({ ...formData, image: uri });
+          }
+        }
+      }
+    );
   };
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Yeni İlan Oluştur</Text>
+
+      {/* 📷 Fotoğraf Ekleme Alanı */}
+      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+        {formData.image ? (
+          <Image source={{ uri: formData.image }} style={styles.imagePreview} />
+        ) : (
+          <Text style={styles.imageText}>📷 Fotoğraf Ekle</Text>
+        )}
+      </TouchableOpacity>
+
       <View style={styles.headContainer}>
-        <TextInput2
+        <ReusableTextInput
           style={styles.textInput}
-          onChangeText={handleTextChange}
-          placeholder="Kedi Adı"
+          onChangeText={(val) => handleChange('name', val)}
+          placeholder="Hayvan Adı"
         />
-        <TextInput2
+        <ReusableTextInput
           style={styles.textInput}
-          value={text}
-          onChangeText={handleTextChange}
-          placeholder="Kedi Türü"
+          onChangeText={(val) => handleChange('type', val)}
+          placeholder="Hayvan Türü"
         />
-        <TextInput2
+        <ReusableTextInput
           style={styles.textInput}
-          value={text}
-          onChangeText={handleTextChange}
-          placeholder="Kedi Yaşı"
+          onChangeText={(val) => handleChange('age', val)}
+          placeholder="Hayvan Yaşı"
         />
-        <TextInput2
+        <ReusableTextInput
           style={styles.textInput}
-          value={text}
-          onChangeText={handleTextChange}
-          placeholder="Kedinin Bulunduğu Şehir"
+          onChangeText={(val) => handleChange('city', val)}
+          placeholder="Şehir"
         />
-        <TextInput2
+        <ReusableTextInput
           style={[styles.textInput, styles.textAreaInput]}
-          value={text}
-          onChangeText={handleTextChange}
-          placeholder="Açıklama(isteğe bağlıdır)"
+          onChangeText={(val) => handleChange('description', val)}
+          placeholder="Açıklama (isteğe bağlı)"
         />
+
         <TouchableOpacity style={styles.actionButton}>
           <Text style={styles.actionButtonText}>İlan Oluştur</Text>
         </TouchableOpacity>
@@ -69,6 +107,31 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#D29596',
   },
+  imagePicker: {
+    alignSelf: 'center',
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: '#f1e6dc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: '#D29596',
+  },
+  imageText: {
+    color: '#D29596',
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  imagePreview: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 75,
+  },
+  headContainer: {
+    marginBottom: 20,
+  },
   textInput: {
     height: 40,
     borderColor: 'gray',
@@ -80,10 +143,6 @@ const styles = StyleSheet.create({
   textAreaInput: {
     height: 100,
   },
-
-  headContainer: {
-    marginBottom: 20,
-  },
   actionButton: {
     backgroundColor: 'white',
     borderColor: '#D29596',
@@ -93,7 +152,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginHorizontal: 10,
     marginTop: 30,
-    alignSelf: 'center', // Butonu ortalar
+    alignSelf: 'center',
   },
   actionButtonText: {
     color: '#D29596',
@@ -102,4 +161,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
 export default NewListing;
