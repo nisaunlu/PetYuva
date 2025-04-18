@@ -1,55 +1,51 @@
-import React from "react";
-import { StyleSheet, View, Dimensions, Image, TouchableOpacity, Text, ScrollView } from "react-native";
-import { kedi2 } from "../../assent/images";
-import ProfileEdit from "./ProfileEdit";
-import NewListing from "./NewListing";
+import React from 'react';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from 'react-native';
+import {kedi2} from '../../assent/images';
 
-
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const ProfileScreen = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Image 
-          style={styles.profileImage}
-          source={kedi2}
-          resizeMode="cover"
-        />
+        <Image style={styles.profileImage} source={kedi2} resizeMode="cover" />
         <Text style={styles.nameText}>Nuran Güler</Text>
         <Text style={styles.subtitleText}>Kedi Gönüllüsü</Text>
       </View>
 
       <View style={styles.statsContainer}>
         <View style={styles.statItem}>
-          
           <Text style={styles.statNumber}>7</Text>
           <Text style={styles.statLabel}>Sahiplendirilen Kedi</Text>
         </View>
         <View style={styles.statItem}>
-        
           <Text style={styles.statNumber}>124</Text>
           <Text style={styles.statLabel}>Takipçi</Text>
         </View>
         <View style={styles.statItem}>
-        
           <Text style={styles.statNumber}>3</Text>
           <Text style={styles.statLabel}>Aktif Destek</Text>
         </View>
       </View>
 
       <View style={styles.actionContainer}>
-      <TouchableOpacity 
-  style={styles.actionButton}
-  onPress={() => navigation.navigate("ProfileEdit")}
->
-  <Text style={styles.actionButtonText}>Profili Düzenle</Text>
-</TouchableOpacity>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => navigation.navigate('ProfileEdit')}>
+          <Text style={styles.actionButtonText}>Profili Düzenle</Text>
+        </TouchableOpacity>
 
-<TouchableOpacity 
-  style={styles.actionButton}
-  onPress={() => navigation.navigate("NewListing")}
->
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => navigation.navigate('NewListing')}>
           <Text style={styles.actionButtonText}>Yeni İlan Oluştur</Text>
         </TouchableOpacity>
       </View>
@@ -57,22 +53,21 @@ const ProfileScreen = ({navigation}) => {
       <View style={styles.infoSection}>
         <Text style={styles.sectionTitle}>Hakkımda</Text>
         <Text style={styles.descriptionText}>
-          Sokak kedilerinin hayatını iyileştirmek için çalışan, 
-          gönüllü bir kedi koruyucusuyum. Her kedinin sıcak bir 
-          yuva ve sevgi hak ettiğine inanıyorum.
+          Sokak kedilerinin hayatını iyileştirmek için çalışan, gönüllü bir kedi
+          koruyucusuyum. Her kedinin sıcak bir yuva ve sevgi hak ettiğine
+          inanıyorum.
         </Text>
       </View>
 
       <View style={styles.contactSection}>
         <Text style={styles.sectionTitle}>İletişim Bilgileri</Text>
         <View style={styles.contactItem}>
-         
           <Text style={styles.contactText}>İstanbul, Türkiye</Text>
         </View>
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +82,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
@@ -132,17 +127,17 @@ const styles = StyleSheet.create({
   actionContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginVertical: 20,
-    paddingHorizontal: 20,
+    marginVertical: 30,
+    paddingHorizontal: 10,
   },
   actionButton: {
     backgroundColor: 'white',
-    borderColor:'#D29596',
-    borderWidth:2,
+    borderColor: '#D29596',
+    borderWidth: 2,
     paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 25,
-    marginHorizontal: 10,
+    marginHorizontal: 1,
   },
   actionButtonText: {
     color: '#D29596',
@@ -152,19 +147,19 @@ const styles = StyleSheet.create({
   infoSection: {
     backgroundColor: 'rgb(227,221,207)',
     padding: 20,
-    borderColor:'#D29596',
-    borderWidth:1,
-    borderRadius:12,
-    margin:4,
+    borderColor: '#D29596',
+    borderWidth: 1,
+    borderRadius: 12,
+    margin: 4,
     marginVertical: 10,
   },
   contactSection: {
     backgroundColor: 'rgb(227,221,207)',
     padding: 20,
-    borderColor:'#D29596',
-    borderWidth:1,
-    borderRadius:12,
-    margin:4,
+    borderColor: '#D29596',
+    borderWidth: 1,
+    borderRadius: 12,
+    margin: 4,
   },
   sectionTitle: {
     fontSize: 18,
@@ -183,7 +178,7 @@ const styles = StyleSheet.create({
   contactText: {
     marginLeft: 10,
     color: '#333',
-  }
-})
+  },
+});
 
 export default ProfileScreen;
