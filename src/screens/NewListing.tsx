@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Alert,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import ReusableTextInput from "../component/TextInput";
+import ReusableTextInput from '../component/TextInput';
+import { useNavigation } from '@react-navigation/native';
 
 const NewListing = () => {
+  const navigation = useNavigation();
   const [formData, setFormData] = useState({
     name: '',
     type: '',
@@ -21,7 +24,19 @@ const NewListing = () => {
   });
 
   const handleChange = (key, value) => {
-    setFormData({ ...formData, [key]: value });
+    // Sadece yaş için sayısal değer kontrolü
+    if (key === 'age') {
+      const numericValue = value.replace(/[^0-9]/g, '');
+      setFormData({ ...formData, [key]: numericValue });
+    }
+    // Açıklama için max 250 karakter kontrolü
+    else if (key === 'description') {
+      if (value.length <= 250) {
+        setFormData({ ...formData, [key]: value });
+      }
+    } else {
+      setFormData({ ...formData, [key]: value });
+    }
   };
 
   const pickImage = () => {
@@ -73,6 +88,7 @@ const NewListing = () => {
           style={styles.textInput}
           onChangeText={(val) => handleChange('age', val)}
           placeholder="Hayvan Yaşı"
+          keyboardType="numeric" // iOS klavyeyi sayıya geçirir
         />
         <ReusableTextInput
           style={styles.textInput}
@@ -83,9 +99,19 @@ const NewListing = () => {
           style={[styles.textInput, styles.textAreaInput]}
           onChangeText={(val) => handleChange('description', val)}
           placeholder="Açıklama (isteğe bağlı)"
+          multiline
+          value={formData.description}
         />
+        <Text style={styles.charCount}>
+          {formData.description.length}/250 karakter
+        </Text>
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => {
+            navigation.goBack(); // geri dön
+          }}
+        >
           <Text style={styles.actionButtonText}>İlan Oluştur</Text>
         </TouchableOpacity>
       </View>
@@ -142,6 +168,14 @@ const styles = StyleSheet.create({
   },
   textAreaInput: {
     height: 100,
+    textAlignVertical: 'top',
+  },
+  charCount: {
+    alignSelf: 'flex-end',
+    fontSize: 12,
+    color: 'gray',
+    marginTop: 4,
+    marginBottom: 20,
   },
   actionButton: {
     backgroundColor: 'white',
@@ -151,7 +185,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 25,
     marginHorizontal: 10,
-    marginTop: 30,
+    marginTop: 10,
     alignSelf: 'center',
   },
   actionButtonText: {
