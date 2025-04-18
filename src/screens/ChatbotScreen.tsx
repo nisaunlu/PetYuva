@@ -1,16 +1,44 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 // Örnek ilanlar
 const sampleListings = [
-  { id: '101', type: 'köpek', breed: 'Golden Retriever', age: '2 yaşında', location: 'İstanbul', description: 'Sevecen ve oyuncu bir köpek.' },
-  { id: '102', type: 'kedi', breed: 'British Shorthair', age: '1 yaşında', location: 'Ankara', description: 'Sakin ve uysal bir kedi.' },
-  { id: '103', type: 'köpek', breed: 'Siberian Husky', age: '3 yaşında', location: 'İzmir', description: 'Soğuğa dayanıklı ve enerjik bir dost.' },
+  {
+    id: '101',
+    type: 'köpek',
+    breed: 'Golden Retriever',
+    age: '2 yaşında',
+    location: 'İstanbul',
+    description: 'Sevecen ve oyuncu bir köpek.',
+  },
+  {
+    id: '102',
+    type: 'kedi',
+    breed: 'British Shorthair',
+    age: '1 yaşında',
+    location: 'Ankara',
+    description: 'Sakin ve uysal bir kedi.',
+  },
+  {
+    id: '103',
+    type: 'köpek',
+    breed: 'Siberian Husky',
+    age: '3 yaşında',
+    location: 'İzmir',
+    description: 'Soğuğa dayanıklı ve enerjik bir dost.',
+  },
 ];
 
-export const ChatbotScreen = () => {
+export const ChatbotScreen = navigation => {
   const [messages, setMessages] = useState([
-    { id: '1', isBot: true, text: 'Merhaba! Bana hayvanlar hakkında her şeyi sorabilirsin.☺️' },
+    {id: '1', isBot: true, text: 'Merhaba! Size nasıl yardımcı olabilirim?'},
   ]);
   const [inputText, setInputText] = useState('');
 
@@ -20,197 +48,183 @@ export const ChatbotScreen = () => {
     const newMessage = {
       id: Date.now().toString(),
       isBot: false,
-      text: inputText
+      text: inputText,
     };
-    
+
     setMessages([...messages, newMessage]);
     setInputText('');
 
+    // Bot yanıtı oluştur
     setTimeout(() => {
       const botResponse = getBotResponse(inputText.toLowerCase());
       setMessages(prev => [...prev, botResponse]);
     }, 1000);
   };
 
+  // Kullanıcının mesajına göre yanıt oluştur
   const getBotResponse = (userText: string) => {
     if (userText.includes('köpek')) {
+      const dogListings = sampleListings.filter(item => item.type === 'köpek');
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'Köpek sahiplenmek harika bir fikir! İstersen hangi ırkları sevdiğini söyleyebilirsin.'
+        text:
+          `İşte bazı köpek ilanları:\n\n` +
+          dogListings
+            .map(
+              dog =>
+                `🐶 ${dog.breed} - ${dog.age}\n📍 ${dog.location}\n📌 ${dog.description}`,
+            )
+            .join('\n\n'),
       };
     }
     if (userText.includes('kedi')) {
+      const catListings = sampleListings.filter(item => item.type === 'kedi');
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'Kediler genelde sakin ve ev ortamına çok uygundur. Sana nasıl yardımcı olabilirim?'
+        text:
+          `İşte bazı kedi ilanları:\n\n` +
+          catListings
+            .map(
+              cat =>
+                `🐱 ${cat.breed} - ${cat.age}\n📍 ${cat.location}\n📌 ${cat.description}`,
+            )
+            .join('\n\n'),
       };
     }
-    if (userText.includes('fiyat') || userText.includes('ücret')) {
+    if (userText.includes('fiyat')) {
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'Sahiplendirme işlemlerimiz tamamen ücretsizdir. Sadece mama ve veteriner gibi temel ihtiyaçları düşünmelisiniz.'
+        text: 'Sahiplendirme ilanlarımız ücretsizdir. Ancak veteriner masraflarını göz önünde bulundurmalısınız.',
       };
     }
-    if (userText.includes('bakım')) {
+    if (userText.includes('bakımı')) {
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'Evcil hayvanların bakımı düzenli mama, temizlik ve veteriner kontrollerini kapsar. Türüne göre detay verebilirim!'
+        text: 'Evcil hayvan bakımı, düzenli beslenme, egzersiz ve veteriner kontrollerini içerir. Daha fazla detay için bir veteriner ile görüşebilirsiniz.',
       };
     }
     if (userText.includes('aşı')) {
       return {
         id: (Date.now() + 1).toString(),
         isBot: true,
-        text: 'İlk aşılar genellikle karma, kuduz ve iç/dış parazittir. Veterinerinize danışarak detaylı bilgi alabilirsiniz.'
+        text: 'Köpek ve kediler için temel aşılar kuduz, karma ve parazit aşılarıdır. Detaylar için bir veterinere danışabilirsiniz.',
       };
     }
-    if (userText.includes('sahiplen')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Sahiplenmek istediğiniz hayvanın türünü, yaşını ve yaşadığınız şehri yazarsanız size yardımcı olabilirim.'
-      };
-    }
-    if (userText.includes('tuvalet eğitimi')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Tuvalet eğitimi sabır gerektirir. Ödüllendirme yöntemi genellikle işe yarar.'
-      };
-    }
-    if (userText.includes('mama') || userText.includes('beslenme')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Yaş ve türüne uygun mamaları tercih etmelisiniz. Veterineriniz en uygun markaları önerebilir.'
-      };
-    }
-    if (userText.includes('uyku')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Evcil dostlarımız gün içinde çokça uyurlar. Bu tamamen normaldir, ancak ani değişikliklerde veteriner desteği alın.'
-      };
-    }
-    if (userText.includes('egzersiz')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Günlük yürüyüşler ve oyunlar özellikle köpekler için çok faydalıdır.'
-      };
-    }
-    if (userText.includes('oyuncak')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Kedi ve köpekler için özel oyuncaklar onların fiziksel ve zihinsel sağlığına katkı sağlar.'
-      };
-    }
-    if (userText.includes('hasta')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Dostunuzun sağlığıyla ilgili bir durum varsa en yakın veterinere başvurmanızı öneririm.'
-      };
-    }
-    if (userText.includes('tüy') || userText.includes('dökülme')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Tüy dökülmesi bazı dönemlerde artabilir. Düzenli tarama ve uygun mama bu durumu azaltabilir.'
-      };
-    }
-    if (userText.includes('yaş') || userText.includes('kaç yaş')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Kaç yaşında bir dost aradığını belirtirsen, sana daha uygun önerilerde bulunabilirim.'
-      };
-    }
-    if (userText.includes('uyumlu') || userText.includes('çocuk')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Çocuklarla iyi geçinen sakin ırklar genelde en iyi tercihlerdir. Örneğin Golden Retriever veya Scottish Fold gibi.'
-      };
-    }
-    if (userText.includes('adım') || userText.includes('adın ne')) {
-      return {
-        id: (Date.now() + 1).toString(),
-        isBot: true,
-        text: 'Ben bir pet asistan botuyum, sana her konuda yardımcı olmaya çalışırım. 😊'
-      };
-    }
-
-    // Varsayılan cevap
     return {
       id: (Date.now() + 1).toString(),
       isBot: true,
-      text: 'Bu konuda emin değilim ama dilersen başka bir şey sorabilirsin. 😊'
+      text: 'Anladım! Daha fazla detay verir misiniz? Örneğin "köpek sahiplenmek istiyorum" veya "kedi bakımı hakkında bilgi alabilir miyim?"',
     };
   };
 
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}>
+          <Ionicons name="chevron-back" size={24} color="#D29596" />
+        </TouchableOpacity>
+        <Text style={styles.screenTitle}>Pet Asistanı</Text>
+        <View style={{width: 44}} />
+      </View>
+
       <ScrollView style={styles.chatContainer}>
-        {messages.map(msg => (
-          <View key={msg.id} style={[styles.message, msg.isBot ? styles.bot : styles.user]}>
-            <Text style={styles.text}>{msg.text}</Text>
+        {messages.map(message => (
+          <View
+            key={message.id}
+            style={[
+              styles.chatBubble,
+              message.isBot ? styles.botBubble : styles.userBubble,
+            ]}>
+            <Text style={styles.chatText}>{message.text}</Text>
           </View>
         ))}
       </ScrollView>
+
       <View style={styles.inputContainer}>
         <TextInput
+          style={styles.input}
           value={inputText}
           onChangeText={setInputText}
-          style={styles.input}
           placeholder="Mesajınızı yazın..."
         />
-        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-          <Text style={styles.sendText}>Gönder</Text>
+        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+          <Text style={styles.sendButtonText}>Gönder</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  chatContainer: { flex: 1, padding: 10 },
-  message: {
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 10,
-    maxWidth: '80%'
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: 'rgb(227,221,207)',
   },
-  bot: {
-    backgroundColor: '#eef',
-    alignSelf: 'flex-start'
+  backButton: {
+    padding: 8,
   },
-  user: {
-    backgroundColor: '#cdf',
-    alignSelf: 'flex-end'
+  screenTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
   },
-  text: { fontSize: 16 },
+  chatContainer: {
+    flex: 1,
+    marginBottom: 10,
+  },
+  chatBubble: {
+    padding: 12,
+    borderRadius: 16,
+    marginBottom: 10,
+    maxWidth: '80%',
+  },
+  botBubble: {
+    backgroundColor: '#E1F5FE',
+    alignSelf: 'flex-start',
+    borderBottomLeftRadius: 4,
+  },
+  userBubble: {
+    backgroundColor: '#E8F5E9',
+    alignSelf: 'flex-end',
+    borderBottomRightRadius: 4,
+  },
+  chatText: {
+    fontSize: 15,
+  },
   inputContainer: {
     flexDirection: 'row',
-    borderTopWidth: 1,
-    borderColor: '#ccc',
-    padding: 5
+    alignItems: 'center',
+    marginTop: 8,
   },
   input: {
     flex: 1,
-    padding: 10,
+    backgroundColor: 'white',
+    padding: 12,
     borderRadius: 20,
-    backgroundColor: '#eee'
+    marginRight: 8,
   },
   sendButton: {
-    justifyContent: 'center',
-    paddingHorizontal: 15
+    backgroundColor: '#D29596',
+    padding: 12,
+    borderRadius: 20,
   },
-  sendText: { color: '#007AFF', fontWeight: 'bold' }
+  sendButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
 });
+
+export default ChatbotScreen;
