@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   View,
@@ -8,12 +8,16 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import ReusableTextInput from '../component/TextInput';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {addListing} from '../redux/listingSlice';
 
 const NewListing = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     name: '',
     type: '',
@@ -24,18 +28,15 @@ const NewListing = () => {
   });
 
   const handleChange = (key, value) => {
-    // Sadece yaş için sayısal değer kontrolü
     if (key === 'age') {
       const numericValue = value.replace(/[^0-9]/g, '');
-      setFormData({ ...formData, [key]: numericValue });
-    }
-    // Açıklama için max 250 karakter kontrolü
-    else if (key === 'description') {
+      setFormData({...formData, [key]: numericValue});
+    } else if (key === 'description') {
       if (value.length <= 250) {
-        setFormData({ ...formData, [key]: value });
+        setFormData({...formData, [key]: value});
       }
     } else {
-      setFormData({ ...formData, [key]: value });
+      setFormData({...formData, [key]: value});
     }
   };
 
@@ -45,7 +46,7 @@ const NewListing = () => {
         mediaType: 'photo',
         quality: 1,
       },
-      (response) => {
+      response => {
         if (response.didCancel) {
           console.log('Kullanıcı iptal etti');
         } else if (response.errorCode) {
@@ -53,11 +54,34 @@ const NewListing = () => {
         } else {
           const uri = response.assets?.[0]?.uri;
           if (uri) {
-            setFormData({ ...formData, image: uri });
+            setFormData({...formData, image: uri});
           }
         }
-      }
+      },
     );
+  };
+
+  const handleCreateListing = () => {
+    const {name, type, age, city, description, image} = formData;
+
+    if (!name || !type || !age || !city || !description || !image) {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun!');
+      return;
+    }
+
+    const newListing = {
+      id: Date.now().toString(),
+      ad: name,
+      tur: type,
+      yas: age,
+      sehir: city,
+      detay: description,
+      image: image,
+      sahibi: 'Nuran Güler',
+    };
+
+    dispatch(addListing(newListing));
+    navigation.navigate('Home');
   };
 
   return (
@@ -67,7 +91,7 @@ const NewListing = () => {
       {/* 📷 Fotoğraf Ekleme Alanı */}
       <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
         {formData.image ? (
-          <Image source={{ uri: formData.image }} style={styles.imagePreview} />
+          <Image source={{uri: formData.image}} style={styles.imagePreview} />
         ) : (
           <Text style={styles.imageText}>📷 Fotoğraf Ekle</Text>
         )}
@@ -76,28 +100,28 @@ const NewListing = () => {
       <View style={styles.headContainer}>
         <ReusableTextInput
           style={styles.textInput}
-          onChangeText={(val) => handleChange('name', val)}
+          onChangeText={val => handleChange('name', val)}
           placeholder="Hayvan Adı"
         />
         <ReusableTextInput
           style={styles.textInput}
-          onChangeText={(val) => handleChange('type', val)}
+          onChangeText={val => handleChange('type', val)}
           placeholder="Hayvan Türü"
         />
         <ReusableTextInput
           style={styles.textInput}
-          onChangeText={(val) => handleChange('age', val)}
+          onChangeText={val => handleChange('age', val)}
           placeholder="Hayvan Yaşı"
-          keyboardType="numeric" // iOS klavyeyi sayıya geçirir
+          keyboardType="numeric"
         />
         <ReusableTextInput
           style={styles.textInput}
-          onChangeText={(val) => handleChange('city', val)}
+          onChangeText={val => handleChange('city', val)}
           placeholder="Şehir"
         />
         <ReusableTextInput
           style={[styles.textInput, styles.textAreaInput]}
-          onChangeText={(val) => handleChange('description', val)}
+          onChangeText={val => handleChange('description', val)}
           placeholder="Açıklama (isteğe bağlı)"
           multiline
           value={formData.description}
@@ -108,10 +132,7 @@ const NewListing = () => {
 
         <TouchableOpacity
           style={styles.actionButton}
-          onPress={() => {
-            navigation.goBack(); // geri dön
-          }}
-        >
+          onPress={handleCreateListing}>
           <Text style={styles.actionButtonText}>İlan Oluştur</Text>
         </TouchableOpacity>
       </View>
@@ -142,57 +163,55 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    borderWidth: 2,
-    borderColor: '#D29596',
-  },
-  imageText: {
-    color: '#D29596',
-    fontWeight: '600',
-    textAlign: 'center',
   },
   imagePreview: {
-    width: '100%',
-    height: '100%',
+    width: 150,
+    height: 150,
     borderRadius: 75,
   },
+  imageText: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
+  },
   headContainer: {
-    marginBottom: 20,
+    marginTop: 20,
   },
   textInput: {
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: '#D29596',
     borderWidth: 1,
-    paddingLeft: 10,
-    borderRadius: 5,
-    marginTop: 5,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    fontSize: 16,
   },
   textAreaInput: {
     height: 100,
     textAlignVertical: 'top',
   },
   charCount: {
-    alignSelf: 'flex-end',
-    fontSize: 12,
-    color: 'gray',
-    marginTop: 4,
-    marginBottom: 20,
+    textAlign: 'right',
+    color: '#888',
+    marginBottom: 15,
   },
   actionButton: {
     backgroundColor: 'white',
-    borderColor: '#D29596',
-    borderWidth: 2,
     paddingVertical: 12,
-    paddingHorizontal: 20,
+    top: -25,
+    left: 72,
+
+    borderWidth: 1,
+    borderColor: '#D29596',
+    width: '50%',
     borderRadius: 25,
-    marginHorizontal: 10,
-    marginTop: 10,
-    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   actionButtonText: {
     color: '#D29596',
+    fontSize: 18,
     fontWeight: 'bold',
-    fontSize: 16,
-    textAlign: 'center',
   },
 });
 

@@ -9,12 +9,13 @@ import {
   Modal,
   StyleSheet,
 } from 'react-native';
-import {kedi1, kedi2, kedi3, kedi4, maya, kedi5} from '../../assent/images';
+import {kedi1, kopek, kus, hamster, maya, kedi5} from '../../assent/images';
+import {useSelector} from 'react-redux';
 
 const {width} = Dimensions.get('window');
 const scaleSize = size => (width / 375) * size;
 
-const ilanlar = [
+const sabitIlanlar = [
   {
     id: '1',
     ad: 'Minik',
@@ -27,37 +28,38 @@ const ilanlar = [
   },
   {
     id: '2',
-    ad: 'Karabaş',
+    ad: 'Rüzgar',
     tur: 'Köpek',
     yas: '3',
     sehir: 'Ankara',
-    detay: 'Eğitimli, çocuklarla iyi anlaşabilen bi kedi.',
-    image: kedi2,
+    detay: 'Eğitimli, çocuklarla iyi anlaşabilen bir köpek.',
+    image: kopek,
     sahibi: 'Nuran Güler',
   },
   {
     id: '3',
     ad: 'Pamuk',
-    tur: 'Kedi',
+    tur: 'Hamster',
     yas: '1',
     sehir: 'İzmir',
-    detay: 'çok tatlı tüylü bir kedi.',
-    image: kedi3,
-    sahibi: 'Nuran Güler',
+    detay: 'Çok tatlı tüylü bir hamster.',
+    image: hamster,
+    sahibi: 'Hamit Berkay Ertek',
   },
   {
     id: '4',
-    ad: 'Şerif Atılmış',
+    ad: 'Şerif',
     tur: 'Kedi',
     yas: '1',
     sehir: 'Düzce',
-    detay: 'öldü ama hala kalbimde yaşıyor.',
+    detay:
+      'Saldırgan ve rahatına düşkün bir kedidir. Aşıları yapılmış ve sağlıklı.',
     image: kedi5,
-    sahibi: 'Nuran Güler',
+    sahibi: 'Ceren Öztürk',
   },
   {
     id: '5',
-    ad: 'Maya Ünlü',
+    ad: 'Maya',
     tur: 'Kedi',
     yas: '4',
     sehir: 'İstanbul',
@@ -69,18 +71,23 @@ const ilanlar = [
   {
     id: '6',
     ad: 'Pamuk',
-    tur: 'Kedi',
+    tur: 'Muhabbet Kuşu',
     yas: '1',
     sehir: 'Gaziantep',
-    detay: 'çok tatlı tüylü bir kedi.',
-    image: kedi4,
-    sahibi: 'Nuran Güler',
+    detay: '5 kelime söyleme yeteneğine sahip.',
+    image: kus,
+    sahibi: 'Ceren Kaynak',
   },
 ];
 
 export const HomeScreen = ({navigation}) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const extraIlanlar = useSelector(state => state.listings.listings);
+
+  // Sabit ilanlar ile redux'tan gelenleri birleştir
+  const tumIlanlar = [...sabitIlanlar, ...extraIlanlar];
 
   const openDetailModal = item => {
     setSelectedItem(item);
@@ -103,7 +110,11 @@ export const HomeScreen = ({navigation}) => {
 
   const renderItem = ({item}) => (
     <View style={styles.card}>
-      <Image style={styles.image} source={item.image} />
+      <Image
+        style={styles.image}
+        source={typeof item.image === 'string' ? {uri: item.image} : item.image}
+      />
+
       <Text style={styles.title}>
         {item.ad} ({item.tur})
       </Text>
@@ -120,9 +131,9 @@ export const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={ilanlar}
+        data={tumIlanlar}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
       />
 
       <Modal
@@ -134,7 +145,14 @@ export const HomeScreen = ({navigation}) => {
           <View style={styles.modalContent}>
             {selectedItem && (
               <>
-                <Image style={styles.modalImage} source={selectedItem.image} />
+                <Image
+                  style={styles.modalImage}
+                  source={
+                    typeof selectedItem.image === 'string'
+                      ? {uri: selectedItem.image}
+                      : selectedItem.image
+                  }
+                />
                 <Text style={styles.modalTitle}>{selectedItem.ad}</Text>
                 <Text style={styles.modalDetailText}>
                   Tür: {selectedItem.tur}
