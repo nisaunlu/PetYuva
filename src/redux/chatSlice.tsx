@@ -1,39 +1,34 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { firestore } from '../../firebaseConfig'; 
+// src/redux/chatSlice.ts
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-// Mesajları almak için bir async thunk oluşturuyoruz
-export const fetchMessages = createAsyncThunk('chat/fetchMessages', async (chatRoomId) => {
-  const snapshot = await firestore
-    .collection('chatRooms')
-    .doc(chatRoomId)
-    .collection('messages')
-    .orderBy('timestamp')
-    .get();
-  
-  const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  return messages;
-});
+interface Message {
+  id: string;
+  sender: string;
+  receiver: string;
+  text: string;
+  timestamp: number;
+}
 
-const chatSlice = createSlice({
+interface ChatState {
+  messages: Message[];
+}
+
+const initialState: ChatState = {
+  messages: [],
+};
+
+export const chatSlice = createSlice({
   name: 'chat',
-  initialState: {
-    messages: [],  // İlk başta messages boş bir dizi olacak
-    status: 'idle',  // Durum 'idle' olacak, 'loading' ve 'failed' durumları da olabilir
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchMessages.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchMessages.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.messages = action.payload;  // Mesajları store'a ekliyoruz
-      })
-      .addCase(fetchMessages.rejected, (state) => {
-        state.status = 'failed';
-      });
+  initialState,
+  reducers: {
+    sendMessageLocal: (state, action: PayloadAction<Message>) => {
+      state.messages.push(action.payload);
+    },
+    clearMessages: state => {
+      state.messages = [];
+    },
   },
 });
 
+export const {sendMessageLocal, clearMessages} = chatSlice.actions;
 export default chatSlice.reducer;
